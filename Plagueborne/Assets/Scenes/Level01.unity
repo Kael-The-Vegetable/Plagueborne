@@ -1175,7 +1175,7 @@ GameObject:
   - component: {fileID: 1093968020}
   - component: {fileID: 1093968019}
   m_Layer: 0
-  m_Name: Object Pool
+  m_Name: Enemy Pool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1227,6 +1227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pool: {fileID: 1093968020}
+  target: {fileID: 542595778}
   numOfEntities: 100
   minDistance: 20
   maxDistance: 50
