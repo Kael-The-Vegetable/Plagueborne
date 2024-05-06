@@ -47,8 +47,11 @@ public class PlayerController : Actor, IReactive
     }
     private void Attack(GameObject attack)
     {
-        CurrentState = State.Attack;
-        attack.SetActive(true);
+        if (!attack.activeInHierarchy)
+        {
+            CurrentState = State.Attack;
+            attack.SetActive(true);
+        }
     }
     #endregion
 

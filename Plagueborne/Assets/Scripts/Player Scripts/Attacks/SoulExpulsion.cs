@@ -18,10 +18,15 @@ public class SoulExpulsion : Attack
     {
         _pool = transform.parent.GetComponent<ObjectPool>();
     }
+    internal override void OnDisable()
+    {
+    }
     internal override IEnumerator Initialize(float time)
     {
         float times = time / attackSpeed;
         float remainder = times % 1 * attackSpeed;
+        yield return new WaitForSeconds(0.5f);
+        transform.parent.GetComponent<PlayerController>().CurrentState = Actor.State.Idle;
         for (int i = 0; i < times; i++)
         {
             for (int j = 0; j < numSpectorsPerAttack; j++) 

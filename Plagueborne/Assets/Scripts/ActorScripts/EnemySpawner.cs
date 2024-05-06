@@ -5,28 +5,49 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public ObjectPool pool;
-    [Header("Wave1")]
+    public Transform target;
+    [Space]
     public int numOfEntities;
     public int minDistance;
     public int maxDistance;
 
     void Start()
     {
-        Transform newObject;
+        for (int i = 0; i < numOfEntities; i++)
+        { NewObject(pool); }
+    }
+    void Update()
+    {
+        int objNum = pool.NumOfObjects;
+        Debug.Log(objNum);
+        for (int i = objNum; i < numOfEntities; i++)
+        { NewObject(pool); }
+        Transform[] objects = pool.GetObjectTransforms(numOfEntities);
         for (int i = 0; i < numOfEntities; i++)
         {
-            newObject = pool.Object;
-            if ( newObject != null )
-            {
-                float j = (float)i / numOfEntities;
-                // get the angle for this step (in radians, not degrees)
-                float angle = j * Mathf.PI * 2;
-                // the X & Y position for this angle are calculated using Sin & Cos
-                float x = Mathf.Sin(angle) * Random.Range(minDistance, maxDistance);
-                float y = Mathf.Cos(angle) * Random.Range(minDistance, maxDistance);
-                newObject.position = new Vector2(x, y); 
-            }
+            if (Vector2.Distance(objects[i].position, target.position) > maxDistance)
+            { NewPosition(objects[i]); }
         }
-        
+    }
+    public void NewPosition(Transform transform)
+    {
+        Vector2 pos = Random.insideUnitCircle.normalized;
+        transform.position = (Vector2)target.position + pos * Random.Range(minDistance, maxDistance - 1);
+    }
+
+    /// <summary>
+    /// Makes a new Object using the object pool at a random location using the method NewPosition().
+    /// </summary>
+    /// <returns>true on a new object being found,<br /> false on no object being found available</returns>
+    public bool NewObject(ObjectPool pool)
+    {
+        bool returned = false;
+        Transform newObject = pool.Object;
+        if (newObject != null)
+        { 
+            NewPosition(newObject); 
+            returned = true;
+        }
+        return returned;
     }
 }
