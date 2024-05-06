@@ -6,6 +6,8 @@ public class SoulExpulsion : Attack
 {
     public float attackSpeed = 0.25f;
     [Space]
+    public int spectorTimeAlive = 10;
+    public int spectorNumberOfHits = 4;
     public float spectorSpeed = 1;
     public float spectorSearchRadius = 2;
     public float spectorRotateRate = 60;
@@ -35,6 +37,8 @@ public class SoulExpulsion : Attack
             obj.Rotate(new Vector3(0, 0, Random.Range(0, 359)));
             obj.position = transform.position;
             Spector spector = obj.GetComponent<Spector>();
+            spector.timeAlive = spectorTimeAlive;
+            spector.numberOfHits = spectorNumberOfHits;
             spector.speed = spectorSpeed;
             spector.searchRadius = spectorSearchRadius;
             spector.angleChangingSpeed = spectorRotateRate;

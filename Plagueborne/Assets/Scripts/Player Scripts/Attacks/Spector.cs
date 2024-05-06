@@ -5,23 +5,30 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Spector : MonoBehaviour
 {
+    public float timeAlive;
+    [Space]
     public float speed;
     public float searchRadius;
     public float angleChangingSpeed;
     [Space]
     public int damage;
+    public int numberOfHits;
 
     private Transform _target;
     private Rigidbody2D _body;
     private int _enemyLayerID;
     private int _enemyLayer;
-    void Start()
+    private void Start()
     {
         _body = GetComponent<Rigidbody2D>();
         _enemyLayerID = LayerMask.NameToLayer("Enemy");
         _enemyLayer = 1 << _enemyLayerID;
     }
-    void FixedUpdate()
+    private void OnEnable()
+    {
+        StartCoroutine(TimeAlive());
+    }
+    private void FixedUpdate()
     {
         #region Searching
         Collider2D[] objects = Physics2D.OverlapCircleAll(transform.position, searchRadius, _enemyLayer);
@@ -52,15 +59,20 @@ public class Spector : MonoBehaviour
         _body.velocity = transform.up * speed;
         #endregion
     }
+    private IEnumerator TimeAlive()
+    {
+        yield return new WaitForSeconds(timeAlive);
+        gameObject.SetActive(false);
+    }
     private void OnTriggerEnter2D(Collider2D collider)
     {
         if (collider.gameObject.layer == _enemyLayerID)
         {
-            gameObject.SetActive(false);
+            numberOfHits--;
             if (collider.gameObject.TryGetComponent(out IDamagable damageable))
-            {
-                damageable.TakeDamage(damage);
-            }
+            { damageable.TakeDamage(damage); }
+            if (numberOfHits <= 0)
+            { gameObject.SetActive(false); }
         }
     }
 }
