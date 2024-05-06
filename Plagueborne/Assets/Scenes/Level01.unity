@@ -834,7 +834,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 1440550383717423727, guid: 61dcf0d841fb29847aa2bb5654f0cbb6, type: 3}
-  numberOfPrefabs: 60
+  numberOfPrefabs: 100
 --- !u!1001 &742761546
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1211,8 +1211,8 @@ MonoBehaviour:
   gizmo: 0
   color: {r: 0.33190084, g: 1, b: 0, a: 1}
   onSelected: 0
-  space: 0
-  size: {x: 0.3, y: 0.3, z: 0}
+  space: 1
+  size: {x: -0.7, y: -0.7, z: -0.7}
   position: {x: 0, y: 0, z: 0}
 --- !u!114 &1093968019
 MonoBehaviour:

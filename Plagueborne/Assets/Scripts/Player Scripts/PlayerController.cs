@@ -6,24 +6,13 @@ using UnityEngine.UIElements;
 
 public class PlayerController : Actor, IReactive
 {
-    #region Misc Variables
-    public new State CurrentState
-    {
-        get => state;
-        set
-        {
-            if (state != value)
-            { state = value; }
-        }
-    }
-    #endregion
-
     #region Movement Variables
     private Vector2 _direction;
     private Rigidbody2D _body;
     #endregion
-
+    
     #region Attacks
+    [Header("Attacks")]
     public GameObject mainAttack;
     public GameObject secondaryAttack;
     #endregion

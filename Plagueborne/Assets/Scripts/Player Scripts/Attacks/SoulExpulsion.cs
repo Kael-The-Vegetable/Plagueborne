@@ -5,6 +5,7 @@ using UnityEngine;
 public class SoulExpulsion : Attack
 {
     public float attackSpeed = 0.25f;
+    public int numSpectorsPerAttack = 2;
     [Space]
     public int spectorTimeAlive = 10;
     public int spectorNumberOfHits = 4;
@@ -23,7 +24,8 @@ public class SoulExpulsion : Attack
         float remainder = times % 1 * attackSpeed;
         for (int i = 0; i < times; i++)
         {
-            SpawnSpector();
+            for (int j = 0; j < numSpectorsPerAttack; j++) 
+            { SpawnSpector(); }
             yield return new WaitForSeconds(attackSpeed);
         }
         yield return new WaitForSeconds(remainder);

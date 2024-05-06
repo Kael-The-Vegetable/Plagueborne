@@ -21,7 +21,11 @@ public abstract class Actor : MonoBehaviour
     public State CurrentState
     {
         get => state;
-        internal set => state = value;
+        internal set
+        {
+            if (state != value)
+            { state = value; }
+        }
     }
     #endregion
 }
