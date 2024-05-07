@@ -9,14 +9,13 @@ public class Dropshadow : MonoBehaviour
     [Space]
     public Vector2 offset;
     public Vector2 scale = Vector2.one;
+    public Transform targetToFollow;
 
     private GameObject _shadow;
     void Start()
     {
         _shadow = new GameObject("Shadow");
-        _shadow.transform.parent = transform;
 
-        _shadow.transform.localPosition = offset;
         _shadow.transform.localScale = scale;
         _shadow.transform.localRotation = Quaternion.identity;
 
@@ -27,5 +26,9 @@ public class Dropshadow : MonoBehaviour
 
         shadowRenderer.sortingLayerName = renderer.sortingLayerName;
         shadowRenderer.sortingOrder = renderer.sortingOrder - 1;
+    }
+    void LateUpdate()
+    {
+        _shadow.transform.localPosition = (Vector2)targetToFollow.position + offset;
     }
 }
