@@ -48,12 +48,10 @@ public class GameState : MonoBehaviour
         else
         { _firstScene = false; }
         GameObject[] newObjects = next.GetRootGameObjects();
-        for (int i = 0; i < newObjects.Length; i++)
+        for (int i = 0; i < newObjects.Length && _canvas == null; i++)
         {
             if (newObjects[i].CompareTag("Canvas"))
-            {
-                _canvas = newObjects[i];
-            }
+            { _canvas = newObjects[i]; }
         }
         if (!_firstScene && _canvas != null)
         { _canvas.SetActive(false); }

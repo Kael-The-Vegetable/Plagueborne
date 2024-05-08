@@ -29,8 +29,6 @@ public class PlayerController : Actor, IReactive
             case State.Walk:
                 Move();
                 break;
-            default:
-                break;
         }
     }
 
@@ -89,6 +87,13 @@ public class PlayerController : Actor, IReactive
         Slip(multiplier, true);
         yield return new WaitForSeconds(duration);
         Slip(1 / multiplier, false);
+    }
+    #endregion
+
+    #region Pause Method
+    public void PauseControl(InputAction.CallbackContext context)
+    {
+        Singleton.Global.State.PauseGame();
     }
     #endregion
 }
