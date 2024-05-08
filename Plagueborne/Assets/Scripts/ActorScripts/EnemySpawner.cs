@@ -19,7 +19,6 @@ public class EnemySpawner : MonoBehaviour
     void Update()
     {
         int objNum = pool.NumOfObjects;
-        Debug.Log(objNum);
         for (int i = objNum; i < numOfEntities; i++)
         { NewObject(pool); }
         Transform[] objects = pool.GetObjectTransforms(numOfEntities);
