@@ -12,14 +12,12 @@ public class MenuController : MonoBehaviour
     [field:SerializeField] public GameObject[] Buttons { get; private set; }
     [Space]
     public GameObject loadOutPanel;
-    [field:SerializeField] public GameObject[] LoadOutButtons { get; private set; }
+    public GameObject[] LoadOutButtons { get; private set; }
     public EventSystem eventSystem;
-    void Awake()
-    {
-        _state = GameObject.FindGameObjectWithTag("GameState").GetComponent<GameState>();
-    }
     void Start()
     {
+        _state = GameObject.FindGameObjectWithTag("GameState").GetComponent<GameState>();
+        
         #region Regular Buttons
         Buttons[0].GetComponent<Button>().onClick.AddListener(() => _state.ChangeScene(1));
         Buttons[1].GetComponent<Button>().onClick.AddListener(LoadOut);
@@ -27,7 +25,14 @@ public class MenuController : MonoBehaviour
         #endregion
 
         #region LoadOut Buttons
-        LoadOutButtons[5].GetComponent<Button>().onClick.AddListener(ExitLoadOut);
+        int length = loadOutPanel.transform.childCount;
+        LoadOutButtons = new GameObject[length];
+        for (int i = 0; i < length; i++)
+        {
+            LoadOutButtons[i] = loadOutPanel.transform.GetChild(i).gameObject;
+        }
+        // final child should be the exit button.
+        LoadOutButtons[length - 1].GetComponent<Button>().onClick.AddListener(ExitLoadOut);
         #endregion
     }
     private void LoadOut()
@@ -45,10 +50,10 @@ public class MenuController : MonoBehaviour
         while (Vector2.Distance(transform.anchoredPosition, newPos) > minPixelDistance)
         {
             Vector2 difference = Vector2.Lerp(Vector2.zero, newPos - transform.anchoredPosition, lerpAmount);
-            if (Vector2.Distance(difference, transform.anchoredPosition) < minPixelDistance)
-            { transform.anchoredPosition += difference.normalized * minPixelDistance; }
-            else
-            { transform.anchoredPosition += difference; }
+            transform.anchoredPosition += 
+                (Vector2.Distance(difference, transform.anchoredPosition) < minPixelDistance) ?
+                difference.normalized * minPixelDistance :
+                difference;
             yield return null;
         }
         transform.anchoredPosition = newPos;

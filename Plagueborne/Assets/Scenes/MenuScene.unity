@@ -1026,7 +1026,7 @@ GameObject:
   - component: {fileID: 450966380}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: Canvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1137,13 +1137,6 @@ MonoBehaviour:
   - {fileID: 286884066}
   - {fileID: 1198122994}
   loadOutPanel: {fileID: 1558210159}
-  <LoadOutButtons>k__BackingField:
-  - {fileID: 473205435}
-  - {fileID: 1689722636}
-  - {fileID: 545015904}
-  - {fileID: 1627754074}
-  - {fileID: 35402137}
-  - {fileID: 1529900406}
   eventSystem: {fileID: 539831100}
 --- !u!1 &451791330
 GameObject:

@@ -5,6 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class GameState : MonoBehaviour
 {
+    private GameObject _canvas = null;
+    private void Start()
+    {
+        _canvas = GameObject.FindGameObjectWithTag("Canvas");
+    }
+
     /// <summary>
     /// Use this method to change the scene as per the build order.
     /// </summary>
