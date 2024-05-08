@@ -4,9 +4,8 @@
     {
         Properties
         {
-            [PerRendererData] _MainTex ("Sprite Texture", 2D) = "white" {}
             _Color ("Tint", Color) = (1,1,1,1)
-            _MainTex ("Base (RGB), Alpha (A)", 2D) = "white" {}
+            [PerRendererData] _ShadowTex ("Base (RGB), Alpha (A)", 2D) = "white" {}
             _Stencil ("Stencil ID", Float) = 0
             _ColorMask ("Color Mask", Float) = 15
             _ClipAlpha ("ClipAlpha", Float) = 0.2
@@ -81,11 +80,11 @@
                     return OUT;
                 }
      
-                sampler2D _MainTex;
+                sampler2D _ShadowTex;
      
                 fixed4 frag(v2f IN) : SV_Target
                 {
-                    half4 color = (tex2D(_MainTex, IN.texcoord) );
+                    half4 color = (tex2D(_ShadowTex, IN.texcoord) );
                     color.rgb=_Color.rgb;
                     color.a*=_Color.a;
                     clip (color.a - _ClipAlpha);
