@@ -8,6 +8,8 @@ public class GameState : MonoBehaviour
     private GameObject _canvas = null;
     private bool _firstScene;
     private bool _isPaused = false;
+
+    public int Kills { get; set; }
     private void Awake()
     {
         _firstScene = SceneManager.GetActiveScene().buildIndex == 0;

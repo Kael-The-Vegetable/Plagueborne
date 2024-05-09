@@ -66,6 +66,7 @@ public class EnemyAI : Actor, IReactive, IDamagable
         StopAllCoroutines();
         gameObject.SetActive(false);
         CurrentState = State.Die;
+        Singleton.Global.State.Kills++;
     }
 
     #region IReactive Methods

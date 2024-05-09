@@ -8,7 +8,6 @@ using UnityEngine.UI;
 
 public class MenuController : MonoBehaviour
 {
-    private GameState _state;
     [field:SerializeField] public GameObject[] Buttons { get; private set; }
     [Space]
     public GameObject loadOutPanel;
@@ -16,12 +15,12 @@ public class MenuController : MonoBehaviour
     public EventSystem eventSystem;
     void Start()
     {
-        _state = GameObject.FindGameObjectWithTag("GameState").GetComponent<GameState>();
         
         #region Regular Buttons
-        Buttons[0].GetComponent<Button>().onClick.AddListener(() => _state.ChangeScene(1));
+        Buttons[0].GetComponent<Button>().onClick.AddListener(() => Singleton.Global.State.ChangeScene(1));
         Buttons[1].GetComponent<Button>().onClick.AddListener(LoadOut);
-        Buttons[3].GetComponent<Button>().onClick.AddListener(_state.ExitGame);
+        Buttons[3].GetComponent<Button>().onClick.AddListener(Singleton.Global.State.ExitGame);
+        
         #endregion
 
         #region LoadOut Buttons
@@ -33,6 +32,14 @@ public class MenuController : MonoBehaviour
         }
         // final child should be the exit button.
         LoadOutButtons[length - 1].GetComponent<Button>().onClick.AddListener(ExitLoadOut);
+        #endregion
+
+        #region Sounds
+        for (int i = 0; i < Buttons.Length; i++) // add blip sound
+        { Buttons[i].GetComponent<Button>().onClick.AddListener(Singleton.Global.Sounds.PlayBlip); }
+        for (int i = 0; i < length; i++) // add blip sound
+        { LoadOutButtons[i].GetComponent<Button>().onClick.AddListener(Singleton.Global.Sounds.PlayBlip); }
+
         #endregion
     }
     private void LoadOut()

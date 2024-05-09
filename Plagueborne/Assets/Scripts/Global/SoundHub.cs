@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class SoundHub : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private AudioSource[] _sources;
+    void Awake()
     {
-        
+        _sources = GetComponents<AudioSource>();
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public void PlayBlip() => _sources[0].Play();
 }
