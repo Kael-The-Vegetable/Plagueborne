@@ -1480,8 +1480,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pool: {fileID: 1093968020}
   target: {fileID: 542595778}
-  numOfEntities: 1
-  minDistance: 20
+  numOfEntities: 200
+  minDistance: 25
   maxDistance: 50
 --- !u!114 &1093968020
 MonoBehaviour:
