@@ -242,9 +242,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MaxHitPoints>k__BackingField: 10
+  <HitThreshold>k__BackingField: 5
   speed: 500
   nextWaypointDistance: 2
   repathRate: 0.25
+  attackDistance: 2.5
 --- !u!114 &-7096823667730229273
 MonoBehaviour:
   m_ObjectHideFlags: 0

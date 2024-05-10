@@ -1,30 +1,30 @@
 using Pathfinding;
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class EnemyAI : Actor, IReactive, IDamagable
 {
     private Transform _target;
     private Seeker _seeker;
     private Rigidbody2D _body;
-    
+    [Space]
     public Path path;
     public float nextWaypointDistance = 2f;
     private int _currentWaypoint = 0;
 
     public float repathRate = 0.25f;
-
+    [Space]
+    public float attackDistance;
     private IEnumerator _hitCoroutine;
+    private IEnumerator _attackCoroutine;
 
     private void Start()
     {
         _target = GameObject.FindGameObjectWithTag("Player").transform;
         _seeker = GetComponent<Seeker>();
         _body = GetComponent<Rigidbody2D>();
-        _hitCoroutine = GameState.DelayedVarChange(result => state = result, 0.5f, State.Hit, State.Idle);
+        _hitCoroutine = GameState.DelayedVarChange(result => CurrentState = result, 0.5f, State.Hit, State.Idle);
+        _attackCoroutine = GameState.DelayedVarChange(result => CurrentState = result, 3, State.Attack, State.Idle);
 
         InvokeRepeating("UpdatePath", 0, repathRate);
     }
@@ -35,11 +35,26 @@ public class EnemyAI : Actor, IReactive, IDamagable
     }
     private void FixedUpdate()
     {
-        Debug.Log(state == State.Idle);
         if (path == null || _currentWaypoint >= path.vectorPath.Count)
         { return; }
-        Vector2 dir = (path.vectorPath[_currentWaypoint] - transform.position).normalized;
-        _body.AddForce(dir * speed * Time.deltaTime);
+
+        switch (CurrentState)
+        {
+            case State.Idle:
+            case State.Walk:
+                Vector2 dir = (path.vectorPath[_currentWaypoint] - transform.position).normalized;
+                _body.AddForce(dir * speed * Time.deltaTime);
+                CurrentState = State.Walk;
+                if (Vector2.Distance(transform.position, path.vectorPath[path.vectorPath.Count - 1])
+                    <= attackDistance)
+                {
+                    StartCoroutine(_attackCoroutine);
+                    StartCoroutine(Lung(3, 0.25f));
+                }
+                break;
+        }
+        
+        
 
         float distance = Vector2.Distance(transform.position, path.vectorPath[_currentWaypoint]);
         if (distance < nextWaypointDistance && _currentWaypoint + 1 < path.vectorPath.Count)
@@ -65,11 +80,10 @@ public class EnemyAI : Actor, IReactive, IDamagable
         { Die(); }
         else if (damage >= HitThreshold)
         {
+            StopCoroutine(_attackCoroutine);
             StopCoroutine(_hitCoroutine);
             StartCoroutine(_hitCoroutine);
         }
-        
-        
     }
     public void Die()
     {
@@ -77,6 +91,17 @@ public class EnemyAI : Actor, IReactive, IDamagable
         gameObject.SetActive(false);
         CurrentState = State.Die;
         Singleton.Global.State.Kills++;
+    }
+
+    /// <summary>
+    /// LungRatio refers to the ratio of moving Back : moving Forward.
+    /// </summary>
+    public IEnumerator Lung(float attackDuration, float lungRatio)
+    {
+        Vector2 dir = (transform.position - path.vectorPath[path.vectorPath.Count - 1]).normalized;
+        _body.AddForce(dir * 200);
+        yield return new WaitForSeconds(attackDuration * lungRatio);
+        _body.AddForce(-dir * 800);
     }
 
     #region IReactive Methods

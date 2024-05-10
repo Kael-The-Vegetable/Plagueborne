@@ -689,6 +689,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <MaxHitPoints>k__BackingField: 10
+  <HitThreshold>k__BackingField: 5
   speed: 4000
   mainAttack: {fileID: 1340348556}
   secondaryAttack: {fileID: 1117575549}
@@ -1479,7 +1480,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pool: {fileID: 1093968020}
   target: {fileID: 542595778}
-  numOfEntities: 100
+  numOfEntities: 1
   minDistance: 20
   maxDistance: 50
 --- !u!114 &1093968020
