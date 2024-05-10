@@ -17,7 +17,7 @@ public class GameState : MonoBehaviour
         _canvas = GameObject.FindGameObjectWithTag("Canvas");
         if (!_firstScene)
         { _canvas.SetActive(false); }
-        SceneManager.activeSceneChanged += SceneChanged;
+        SceneManager.activeSceneChanged += SceneChanged; // adding the SceneChanged method to the event.
     }
 
     /// <summary>
@@ -44,14 +44,21 @@ public class GameState : MonoBehaviour
     /// </summary>
     public static void ExitGame() => Application.Quit();
 
-    
+    /// <summary>
+    /// Use this method to set a variable followed by waiting, then setting the variable later to a different value. <br />
+    /// Use ( result => [ your variable name here ] = result ) in place for the variable area.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="variable"></param>
+    /// <param name="time"></param>
+    /// <param name="initialValue"></param>
+    /// <param name="finalValue"></param>
+    /// <returns></returns>
     public static IEnumerator DelayedVarChange<T>(Action<T> variable, float time, T initialValue, T finalValue)
     {
-        Debug.Log(": Start time: " + Time.time);
         variable(initialValue);
         yield return new WaitForSeconds(time);
         variable(finalValue);
-        Debug.Log(": End time: " + Time.time);
     }
 
 

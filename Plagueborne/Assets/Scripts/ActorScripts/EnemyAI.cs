@@ -2,72 +2,53 @@ using Pathfinding;
 using System.Collections;
 using UnityEngine;
 
-public class EnemyAI : Actor, IReactive, IDamagable
+public abstract class EnemyAI : Actor, IDamagable
 {
-    private Transform _target;
-    private Seeker _seeker;
-    private Rigidbody2D _body;
+    protected Transform _target;
+    protected Seeker _seeker;
+    protected Rigidbody2D _body;
     [Space]
     public Path path;
     public float nextWaypointDistance = 2f;
-    private int _currentWaypoint = 0;
+    protected int _currentWaypoint = 0;
 
     public float repathRate = 0.25f;
     [Space]
     public float attackDistance;
-    private Coroutine _hitCoroutine;
-    private Coroutine _attackCoroutine;
+    public float damage;
+    protected Coroutine _hitCoroutine;
+    protected Coroutine _attackCoroutine;
 
-    private void Start()
+    #region Reset Variables
+    protected float _originalDrag;
+    protected float _originalSpeed;
+    #endregion
+
+    internal virtual void Awake()
     {
         _target = GameObject.FindGameObjectWithTag("Player").transform;
         _seeker = GetComponent<Seeker>();
         _body = GetComponent<Rigidbody2D>();
 
+        _originalDrag = _body.drag;
+        _originalSpeed = speed;
+
         InvokeRepeating("UpdatePath", 0, repathRate);
     }
-    private void OnEnable()
+    internal virtual void OnEnable()
     {
         CurrentState = State.Idle;
         currentHP = MaxHitPoints;
+        speed = _originalSpeed;
+        _body.drag = _originalDrag;
     }
-    private void FixedUpdate()
-    {
-        if (path == null || _currentWaypoint >= path.vectorPath.Count)
-        { return; }
-
-        switch (CurrentState)
-        {
-            case State.Idle:
-            case State.Walk:
-                Vector2 dir = (path.vectorPath[_currentWaypoint] - transform.position).normalized;
-                _body.AddForce(dir * speed * Time.deltaTime);
-                CurrentState = State.Walk;
-                if (Vector2.Distance(transform.position, path.vectorPath[path.vectorPath.Count - 1])
-                    <= attackDistance)
-                {
-                    if (_attackCoroutine != null)
-                    { StopCoroutine(_attackCoroutine); }
-                    _attackCoroutine = StartCoroutine(
-                        GameState.DelayedVarChange(
-                            result => CurrentState = result, 3, State.Attack, State.Idle));
-                    StartCoroutine(Lung(3, 0.25f));
-                }
-                break;
-        }
-        
-        
-
-        float distance = Vector2.Distance(transform.position, path.vectorPath[_currentWaypoint]);
-        if (distance < nextWaypointDistance && _currentWaypoint + 1 < path.vectorPath.Count)
-        { _currentWaypoint++; }
-    }
-    private void UpdatePath()
+    internal abstract void FixedUpdate();
+    internal virtual void UpdatePath()
     {
         if (_seeker.IsDone())
         { _seeker.StartPath(transform.position, _target.position, OnPathComplete); }    
     }
-    private void OnPathComplete(Path p)
+    internal virtual void OnPathComplete(Path p)
     {
         if (!p.error)
         {
@@ -75,7 +56,7 @@ public class EnemyAI : Actor, IReactive, IDamagable
             _currentWaypoint = 0;
         }
     }
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
         currentHP -= damage;
         if (currentHP <= 0)
@@ -90,44 +71,11 @@ public class EnemyAI : Actor, IReactive, IDamagable
             _hitCoroutine = StartCoroutine(GameState.DelayedVarChange(result => CurrentState = result, 0.5f, State.Hit, State.Idle));
         }
     }
-    public void Die()
+    public virtual void Die()
     {
         StopAllCoroutines();
         gameObject.SetActive(false);
         CurrentState = State.Die;
         Singleton.Global.State.Kills++;
     }
-
-    /// <summary>
-    /// LungRatio refers to the ratio of moving Back : moving Forward.
-    /// </summary>
-    public IEnumerator Lung(float attackDuration, float lungRatio)
-    {
-        Vector2 dir = (transform.position - path.vectorPath[path.vectorPath.Count - 1]).normalized;
-        _body.AddForce(dir * 200);
-        yield return new WaitForSeconds(attackDuration * lungRatio);
-        _body.AddForce(-dir * 800);
-    }
-
-    #region IReactive Methods
-    public void Slip(float multiplier, bool isSlipping)
-    {
-        if (isSlipping)
-        { speed *= multiplier * 2; }
-        else
-        { speed *= multiplier * 0.5f; }
-
-        _body.drag *= multiplier;
-    }
-    public void Stick(float multiplier, bool isSticking) => _body.drag *= multiplier;
-    public void ApplyForce(Vector2 force) => _body.AddForce(force);
-    public void Fling(float multiplier, float duration)
-        => StartCoroutine(Flinger(multiplier, duration));
-    public IEnumerator Flinger(float multiplier, float duration)
-    {
-        Slip(multiplier, true);
-        yield return new WaitForSeconds(duration);
-        Slip(1 / multiplier, false);
-    }
-    #endregion
 }

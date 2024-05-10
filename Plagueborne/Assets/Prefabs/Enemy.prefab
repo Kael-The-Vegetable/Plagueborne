@@ -114,8 +114,8 @@ GameObject:
   - component: {fileID: 4927319794811887051}
   - component: {fileID: 6038405324253312303}
   - component: {fileID: 541601345185210291}
-  - component: {fileID: 8904969035001087800}
   - component: {fileID: -7096823667730229273}
+  - component: {fileID: 8040490144468720473}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Untagged
@@ -229,24 +229,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &8904969035001087800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2188253398014814224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3f2fbb0f846499459f60c92e4f37c58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  <MaxHitPoints>k__BackingField: 10
-  <HitThreshold>k__BackingField: 5
-  speed: 500
-  nextWaypointDistance: 2
-  repathRate: 0.25
-  attackDistance: 2.5
 --- !u!114 &-7096823667730229273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,3 +244,24 @@ MonoBehaviour:
   _body: {fileID: 541601345185210291}
   _renderer: {fileID: 6839489394728438555}
   sensitivity: 0.01
+--- !u!114 &8040490144468720473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2188253398014814224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a17f7d56d7117f4fa2fd4141a97900b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <MaxHitPoints>k__BackingField: 10
+  <HitThreshold>k__BackingField: 5
+  speed: 500
+  nextWaypointDistance: 2
+  repathRate: 0.25
+  attackDistance: 2
+  damage: 1
+  attackTime: 2
+  attackRatio: 0.33
