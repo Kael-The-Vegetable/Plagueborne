@@ -17,11 +17,14 @@ public class EnemyAI : Actor, IReactive, IDamagable
 
     public float repathRate = 0.25f;
 
+    private IEnumerator _hitCoroutine;
+
     private void Start()
     {
         _target = GameObject.FindGameObjectWithTag("Player").transform;
         _seeker = GetComponent<Seeker>();
         _body = GetComponent<Rigidbody2D>();
+        _hitCoroutine = GameState.DelayedVarChange(result => state = result, 0.5f, State.Hit, State.Idle);
 
         InvokeRepeating("UpdatePath", 0, repathRate);
     }
@@ -32,6 +35,7 @@ public class EnemyAI : Actor, IReactive, IDamagable
     }
     private void FixedUpdate()
     {
+        Debug.Log(state == State.Idle);
         if (path == null || _currentWaypoint >= path.vectorPath.Count)
         { return; }
         Vector2 dir = (path.vectorPath[_currentWaypoint] - transform.position).normalized;
@@ -54,12 +58,18 @@ public class EnemyAI : Actor, IReactive, IDamagable
             _currentWaypoint = 0;
         }
     }
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         currentHP -= damage;
-        CurrentState = State.Hit;
         if (currentHP <= 0)
         { Die(); }
+        else if (damage >= HitThreshold)
+        {
+            StopCoroutine(_hitCoroutine);
+            StartCoroutine(_hitCoroutine);
+        }
+        
+        
     }
     public void Die()
     {

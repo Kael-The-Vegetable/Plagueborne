@@ -32,7 +32,8 @@ public interface IReactive
 }
 public interface IDamagable
 {
-    public int MaxHitPoints { get; set; }
-    public void TakeDamage(int damage);
+    public float MaxHitPoints { get; set; }
+    public float HitThreshold { get; set; }
+    public void TakeDamage(float damage);
     public void Die();
 }

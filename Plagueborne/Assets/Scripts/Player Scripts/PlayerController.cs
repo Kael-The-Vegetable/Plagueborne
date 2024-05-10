@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
-public class PlayerController : Actor, IReactive
+public class PlayerController : Actor, IReactive, IDamagable
 {
     #region Movement Variables
     private Vector2 _direction;
@@ -50,6 +50,21 @@ public class PlayerController : Actor, IReactive
             CurrentState = State.Attack;
             attack.SetActive(true);
         }
+    }
+    #endregion
+
+    #region Damage Methods
+    public void TakeDamage(float damage)
+    {
+        currentHP -= damage;
+        CurrentState = State.Hit;
+        if (currentHP <= 0)
+        { Die(); }
+    }
+    public void Die()
+    {
+        StopAllCoroutines();
+        GameState.ChangeScene(0);
     }
     #endregion
 

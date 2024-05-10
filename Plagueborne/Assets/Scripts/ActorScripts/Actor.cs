@@ -4,8 +4,9 @@ using UnityEngine;
 
 public abstract class Actor : MonoBehaviour
 {
-    [field: SerializeField] public int MaxHitPoints { get; set; } = 10;
-    internal int currentHP;
+    [field: SerializeField] public float MaxHitPoints { get; set; } = 10;
+    internal float currentHP;
+    [field: SerializeField] public float HitThreshold { get; set; } = 5;
     [SerializeField] internal float speed = 500;
 
     #region State Variables

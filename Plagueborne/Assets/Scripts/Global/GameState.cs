@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -36,12 +37,23 @@ public class GameState : MonoBehaviour
     /// Use this method to change the scene as per the build order.
     /// </summary>
     /// <param name="index"></param>
-    public void ChangeScene(int index) => SceneManager.LoadScene(index);
+    public static void ChangeScene(int index) => SceneManager.LoadScene(index);
     
     /// <summary>
     /// Use this method to immediatly exit the program.
     /// </summary>
-    public void ExitGame() => Application.Quit();
+    public static void ExitGame() => Application.Quit();
+
+    
+    public static IEnumerator DelayedVarChange<T>(Action<T> variable, float time, T initialValue, T finalValue)
+    {
+        Debug.Log(": Start time: " + Time.time);
+        variable(initialValue);
+        yield return new WaitForSeconds(time);
+        variable(finalValue);
+        Debug.Log(": End time: " + Time.time);
+    }
+
 
     private void SceneChanged(Scene old, Scene next)
     {

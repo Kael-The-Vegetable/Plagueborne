@@ -17,9 +17,9 @@ public class MenuController : MonoBehaviour
     {
         
         #region Regular Buttons
-        Buttons[0].GetComponent<Button>().onClick.AddListener(() => Singleton.Global.State.ChangeScene(1));
+        Buttons[0].GetComponent<Button>().onClick.AddListener(() => GameState.ChangeScene(1));
         Buttons[1].GetComponent<Button>().onClick.AddListener(LoadOut);
-        Buttons[3].GetComponent<Button>().onClick.AddListener(Singleton.Global.State.ExitGame);
+        Buttons[3].GetComponent<Button>().onClick.AddListener(GameState.ExitGame);
         
         #endregion
 
