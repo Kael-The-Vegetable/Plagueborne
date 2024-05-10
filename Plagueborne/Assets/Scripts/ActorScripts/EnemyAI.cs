@@ -15,16 +15,14 @@ public class EnemyAI : Actor, IReactive, IDamagable
     public float repathRate = 0.25f;
     [Space]
     public float attackDistance;
-    private IEnumerator _hitCoroutine;
-    private IEnumerator _attackCoroutine;
+    private Coroutine _hitCoroutine;
+    private Coroutine _attackCoroutine;
 
     private void Start()
     {
         _target = GameObject.FindGameObjectWithTag("Player").transform;
         _seeker = GetComponent<Seeker>();
         _body = GetComponent<Rigidbody2D>();
-        _hitCoroutine = GameState.DelayedVarChange(result => CurrentState = result, 0.5f, State.Hit, State.Idle);
-        _attackCoroutine = GameState.DelayedVarChange(result => CurrentState = result, 3, State.Attack, State.Idle);
 
         InvokeRepeating("UpdatePath", 0, repathRate);
     }
@@ -48,7 +46,11 @@ public class EnemyAI : Actor, IReactive, IDamagable
                 if (Vector2.Distance(transform.position, path.vectorPath[path.vectorPath.Count - 1])
                     <= attackDistance)
                 {
-                    StartCoroutine(_attackCoroutine);
+                    if (_attackCoroutine != null)
+                    { StopCoroutine(_attackCoroutine); }
+                    _attackCoroutine = StartCoroutine(
+                        GameState.DelayedVarChange(
+                            result => CurrentState = result, 3, State.Attack, State.Idle));
                     StartCoroutine(Lung(3, 0.25f));
                 }
                 break;
@@ -80,9 +82,12 @@ public class EnemyAI : Actor, IReactive, IDamagable
         { Die(); }
         else if (damage >= HitThreshold)
         {
-            StopCoroutine(_attackCoroutine);
-            StopCoroutine(_hitCoroutine);
-            StartCoroutine(_hitCoroutine);
+            if (_attackCoroutine != null)
+            { StopCoroutine(_attackCoroutine); }
+            if (_hitCoroutine != null)
+            { StopCoroutine(_hitCoroutine); }
+            
+            _hitCoroutine = StartCoroutine(GameState.DelayedVarChange(result => CurrentState = result, 0.5f, State.Hit, State.Idle));
         }
     }
     public void Die()
