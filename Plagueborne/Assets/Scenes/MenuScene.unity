@@ -2541,6 +2541,7 @@ GameObject:
   - component: {fileID: 1907723609}
   - component: {fileID: 1907723608}
   - component: {fileID: 1907723607}
+  - component: {fileID: 1907723611}
   m_Layer: 5
   m_Name: LoadoutCanvas
   m_TagString: Untagged
@@ -2633,6 +2634,20 @@ RectTransform:
   m_AnchoredPosition: {x: 40, y: 0}
   m_SizeDelta: {x: 800, y: 449.8615}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1907723611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1907723605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e68b3ca51d996424997448c07bf85117, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCanvas: {fileID: 109600421}
+  backButton: {fileID: 1709414956}
 --- !u!1 &1933291753
 GameObject:
   m_ObjectHideFlags: 0
@@ -2977,6 +2992,7 @@ GameObject:
   - component: {fileID: 2101755477}
   - component: {fileID: 2101755476}
   - component: {fileID: 2101755475}
+  - component: {fileID: 2101755479}
   m_Layer: 5
   m_Name: OptionsCanvas
   m_TagString: Untagged
@@ -3069,6 +3085,20 @@ RectTransform:
   m_AnchoredPosition: {x: -40, y: 0}
   m_SizeDelta: {x: 800, y: 449.8615}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2101755479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101755473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9328c2da4c792e9488c44da9ecc03678, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCanvas: {fileID: 109600421}
+  backButton: {fileID: 389493206}
 --- !u!1 &2119322216
 GameObject:
   m_ObjectHideFlags: 0

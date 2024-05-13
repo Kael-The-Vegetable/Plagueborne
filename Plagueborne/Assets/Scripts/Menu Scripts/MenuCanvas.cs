@@ -29,25 +29,33 @@ public class MenuCanvas : MonoBehaviour
         buttons[0].onClick.AddListener(() => GameState.ChangeScene(1));
 
         buttons.Add(loadoutButton.GetComponent<Button>());
-        buttons[1].onClick.AddListener(() => StartCoroutine(StartMovement(loadout, new Vector2(0, 0), 3)));
+        buttons[1].onClick.AddListener(() => StartCoroutine(StartMovement(loadout, new Vector2(0, 0), 2, true)));
 
         buttons.Add(optionButton.GetComponent<Button>());
-        buttons[2].onClick.AddListener(() => StartCoroutine(StartMovement(options, new Vector2(0, 0), 3)));
+        buttons[2].onClick.AddListener(() => StartCoroutine(StartMovement(options, new Vector2(0, 0), 2, true)));
 
         buttons.Add(exitButton.GetComponent<Button>());
         buttons[3].onClick.AddListener(GameState.ExitGame);
         #endregion
     }
-    private IEnumerator StartMovement(GameObject objToMove, Vector2 newPos, float duration)
+    public IEnumerator StartMovement(GameObject objToMove, Vector2 newPos, float duration, bool disableMenu)
     {
-        DisableButtons(true);
-        objToMove.SetActive(true);
         objToMove.transform.DOMove(newPos, duration);
-        yield return new WaitForSeconds(duration);
-        GameObject selectedObj = objToMove.transform.GetChild(1).gameObject;
-        Debug.Log(eventSystem);
-        Debug.Log(selectedObj);
-        eventSystem.SetSelectedGameObject(selectedObj);
+        if (disableMenu)
+        {
+            DisableButtons(true);
+            objToMove.SetActive(true);
+            yield return new WaitForSeconds(duration);
+            GameObject selectedObj = objToMove.transform.GetChild(1).gameObject;
+            eventSystem.SetSelectedGameObject(selectedObj);
+        }
+        else
+        {
+            yield return new WaitForSeconds(duration);
+            DisableButtons(false);
+            objToMove.SetActive(false);
+            eventSystem.SetSelectedGameObject(playButton);
+        }
     }
     private void DisableButtons(bool disable)
     {
@@ -55,10 +63,5 @@ public class MenuCanvas : MonoBehaviour
         {
             buttons[i].enabled = !disable;
         }
-    }
-
-    public void GoToMenu(GameObject objtoMove, Vector2 pos, float duration)
-    {
-        
     }
 }
