@@ -35,12 +35,12 @@ public class PlayerController : Actor, IReactive, IDamagable
     #region Attack Methods
     public void MainAttackControl(InputAction.CallbackContext context)
     {
-        if (context.performed && state != State.Attack)
+        if (state != State.Attack)
         { Attack(mainAttack); }
     }
     public void SecondaryAttackControl(InputAction.CallbackContext context)
     {
-        if (context.performed && state != State.Attack)
+        if (state != State.Attack)
         { Attack(secondaryAttack); }
     }
     private void Attack(GameObject attack)

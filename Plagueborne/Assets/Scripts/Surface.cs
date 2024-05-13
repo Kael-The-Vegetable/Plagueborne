@@ -14,7 +14,6 @@ public class Surface : MonoBehaviour
     public float value;
     private float _inverseValue;
 
-    private List<IReactive> _reactingWith = new List<IReactive>();
     private void Awake()
     {
         _inverseValue = 1 / value;
@@ -31,14 +30,12 @@ public class Surface : MonoBehaviour
             case SurfaceType.Slippery:
                 if (collision.gameObject.TryGetComponent(out IReactive slipping))
                 { 
-                    _reactingWith.Add(slipping);
                     slipping.Slip(_inverseValue, true); 
                 }
                 break;
             case SurfaceType.Sticky:
                 if (collision.gameObject.TryGetComponent(out IReactive sticking))
                 {
-                    _reactingWith.Add(sticking);
                     sticking.Stick(value, true); 
                 }
                 break;
