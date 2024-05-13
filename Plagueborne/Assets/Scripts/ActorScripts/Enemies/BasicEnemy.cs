@@ -57,9 +57,9 @@ public class BasicEnemy : EnemyAI, IReactive
     internal IEnumerator Lunge(float attackDuration, float lungRatio)
     {
         Vector2 dir = (transform.position - path.vectorPath[path.vectorPath.Count - 1]).normalized;
-        _body.AddForce(dir * lungeForce * 0.25f);
+        _body.AddForce(dir * lungeForce  * speed * 0.25f);
         yield return new WaitForSeconds(attackDuration * lungRatio);
-        _body.AddForce(-dir * lungeForce);
+        _body.AddForce(-dir * lungeForce * speed);
     }
 
     #region IReactive Methods
