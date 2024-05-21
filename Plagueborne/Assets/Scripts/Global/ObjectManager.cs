@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ObjectManager : MonoBehaviour
 {
-    private Transform[] _types;
     private int[] _typeIDs;
     private ObjectPool[] _pools;
     void Awake()

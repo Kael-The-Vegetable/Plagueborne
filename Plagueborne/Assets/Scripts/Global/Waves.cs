@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,11 +14,15 @@ public class Waves : MonoBehaviour
     private float[] _waveSpawnRate;
     // first number is starting index in _waveMonsters & _monsterPercentages, second is index to stop at.
     private int[,] _waveTypes;
-    private List<Transform> _waveMonsters;
+    private List<string> _waveMonsters;
     private List<float> _monsterPercentages;
     #endregion
 
+    private EnemySpawner _spawner;
+    private float _currentWaveTime;
     private int _currentWave = 0;
+
+    private Dictionary<string, ObjectPool> _monsterTypes = new Dictionary<string, ObjectPool>();
 
     private void Awake()
     {
@@ -26,7 +31,7 @@ public class Waves : MonoBehaviour
         _waveLength = new int[WaveData.Length];
         _waveSpawnRate = new float[WaveData.Length];
         _waveTypes = new int[WaveData.Length,2];
-        _waveMonsters = new List<Transform>();
+        _waveMonsters = new List<string>();
         _monsterPercentages = new List<float>();
 
         for (int i = 0; i < WaveData.Length; i++)
@@ -38,7 +43,7 @@ public class Waves : MonoBehaviour
             int types = int.Parse(brokenString[2]);
             for (int c = 0; c < types; c++)
             {
-                _waveMonsters.Add(Resources.Load<Transform>($"Prefabs/Enemies/{brokenString[3 + c * 2]}"));
+                _waveMonsters.Add($"{brokenString[3 + c * 2]}");
                 _monsterPercentages.Add(float.Parse(brokenString[4 + c * 2]));
             }
             _waveTypes[i, 0] = _waveMonsters.Count - types;
@@ -49,6 +54,48 @@ public class Waves : MonoBehaviour
                 Debug.Log($"Monster {j} Name: {_waveMonsters[j]} | Percentage: {_monsterPercentages[j]}");
             }
         }
+
         #endregion
+
+        if (WaveData.Length > 0)
+        {
+            _spawner = FindFirstObjectByType<EnemySpawner>();
+        }
     }
+    private void Start()
+    {
+        #region Hashtable Stuff
+        _monsterTypes["Peasant"] = Singleton.Global.Objects.GetPeasantPool();
+        _monsterTypes["Slime"] = Singleton.Global.Objects.GetSlimePool();
+        #endregion
+
+        StartWave(_currentWave);
+    }
+    private void Update()
+    {
+        _currentWaveTime += Time.deltaTime;
+        if (_waveLength[_currentWave] < _currentWaveTime)
+        {
+            _currentWaveTime = 0;
+            StartWave(++_currentWave);
+        }
+    }
+    private void StartWave(int id)
+    {
+        Debug.Log($"New Wave: {id}");
+        _spawner.pools.Clear();
+        for (int i = _waveTypes[id, 0]; i < _waveTypes[id, 1]; i++)
+        {
+            if (_monsterTypes.TryGetValue(_waveMonsters[i], out ObjectPool poolDelegate))
+            {
+                _spawner.pools.Add(poolDelegate);
+            }
+        }
+    }
+
+    /// <summary>
+    /// ONLY USE WHEN ABOUT TO CHANGE SCENES!
+    /// </summary>
+    /// <param name="data"></param>
+    public void SetWaveDataForNextScene(string[] data) => WaveData = data;
 }

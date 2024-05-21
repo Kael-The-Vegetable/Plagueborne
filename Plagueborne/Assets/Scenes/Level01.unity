@@ -1133,10 +1133,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1270035082}
-  - {fileID: 1559912645}
-  - {fileID: 1478506467}
   - {fileID: 419228398}
+  - {fileID: 1270035082}
+  - {fileID: 1478506467}
+  - {fileID: 1559912645}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &994691649
@@ -1539,10 +1539,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 519420032}
-  numOfEntities: 400
+  numOfEntities: 0
   timeBetweenEntities: 0.05
   minDistance: 25
   maxDistance: 30
+  pools: []
+  poolPercentages: []
 --- !u!114 &1093968020
 MonoBehaviour:
   m_ObjectHideFlags: 0

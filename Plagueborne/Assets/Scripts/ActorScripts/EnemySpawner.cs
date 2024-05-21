@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -11,6 +12,9 @@ public class EnemySpawner : MonoBehaviour
     [Space]
     public int minDistance;
     public int maxDistance;
+
+    public List<ObjectPool> pools;
+    public List<float> poolPercentages;
 
     private int _objectNumber;
     private void Start()

@@ -8,6 +8,7 @@ public class Singleton : MonoBehaviour
     public SoundHub Sounds { get; private set; }
     public GameState State { get; private set; }
     public ObjectManager Objects { get; private set; }
+    public Waves Waves { get; private set; }
     private void Awake()
     {
         if (Global != null && Global != this)
@@ -21,5 +22,6 @@ public class Singleton : MonoBehaviour
         Sounds = GetComponentInChildren<SoundHub>();
         State = GetComponentInChildren<GameState>();
         Objects = GetComponentInChildren<ObjectManager>();
+        Waves = GetComponentInChildren<Waves>();
     }
 }
