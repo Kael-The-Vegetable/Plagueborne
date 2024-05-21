@@ -64,25 +64,30 @@ public class Waves : MonoBehaviour
     }
     private void Start()
     {
-        #region Hashtable Stuff
-        _monsterTypes["Peasant"] = Singleton.Global.Objects.GetPeasantPool();
-        _monsterTypes["Slime"] = Singleton.Global.Objects.GetSlimePool();
-        #endregion
+        if (WaveData.Length > 0)
+        {
+            #region Dictionary Stuff
+            _monsterTypes["Peasant"] = Singleton.Global.Objects.GetPeasantPool();
+            _monsterTypes["Slime"] = Singleton.Global.Objects.GetSlimePool();
+            #endregion
 
-        StartWave(_currentWave);
+            StartWave(_currentWave);
+        }
     }
     private void Update()
     {
-        _currentWaveTime += Time.deltaTime;
-        if (_waveLength[_currentWave] < _currentWaveTime)
+        if (_currentWave < _waveLength.Length)
         {
-            _currentWaveTime = 0;
-            StartWave(++_currentWave);
+            _currentWaveTime += Time.deltaTime;
+            if (_waveLength[_currentWave] < _currentWaveTime)
+            {
+                _currentWaveTime = 0;
+                StartWave(++_currentWave);
+            }
         }
     }
     private void StartWave(int id)
     {
-        Debug.Log($"New Wave: {id}");
         _spawner.pools.Clear();
         _spawner.poolPercentages.Clear();
         for (int i = _waveTypes[id, 0]; i < _waveTypes[id, 1]; i++)
