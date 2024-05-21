@@ -84,12 +84,15 @@ public class Waves : MonoBehaviour
     {
         Debug.Log($"New Wave: {id}");
         _spawner.pools.Clear();
+        _spawner.poolPercentages.Clear();
         for (int i = _waveTypes[id, 0]; i < _waveTypes[id, 1]; i++)
         {
             if (_monsterTypes.TryGetValue(_waveMonsters[i], out ObjectPool poolDelegate))
             {
                 _spawner.pools.Add(poolDelegate);
+                _spawner.poolPercentages.Add(_monsterPercentages[i]);
             }
+            _spawner.timeBetweenEntities = _waveSpawnRate[id];
         }
     }
 
