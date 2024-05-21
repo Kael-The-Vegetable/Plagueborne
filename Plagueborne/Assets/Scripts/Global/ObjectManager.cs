@@ -37,8 +37,10 @@ public class ObjectManager : MonoBehaviour
         get
         {
             int numObj = 0;
-            numObj += GetPeasantPool().NumOfObjects;
-            numObj += GetSlimePool().NumOfObjects;
+            for (int i = 0; i < _typeIDs.Length; i++)
+            {
+                numObj += _pools[_typeIDs[i]].NumOfObjects;
+            }
             return numObj;
         }
     }

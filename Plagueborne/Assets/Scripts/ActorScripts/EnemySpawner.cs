@@ -34,7 +34,6 @@ public class EnemySpawner : MonoBehaviour
         
         
         Transform[] objects = peasantPool.GetObjectTransforms(_objectNumber);
-        Debug.Log($"Number Recorded: {_objectNumber} | Number Actual: {peasantPool.NumOfObjects}");
         for (int i = 0; i < _objectNumber; i++)
         {
             if (objects[i] != null)
