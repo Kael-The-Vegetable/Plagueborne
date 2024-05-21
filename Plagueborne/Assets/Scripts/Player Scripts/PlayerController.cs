@@ -6,8 +6,14 @@ using UnityEngine.UIElements;
 
 public class PlayerController : Actor, IReactive, IDamagable
 {
+    #region Input System Variables
+    public PlayerInput input;
+    #endregion
+    
     #region Movement Variables
     private Vector2 _direction;
+    private Vector2 _lookDirection;
+    public Vector2 LookingDir { get => _lookDirection; }
     private Rigidbody2D _body;
     #endregion
     
@@ -35,12 +41,12 @@ public class PlayerController : Actor, IReactive, IDamagable
     #region Attack Methods
     public void MainAttackControl(InputAction.CallbackContext context)
     {
-        if (state != State.Attack)
+        if (context.performed && state != State.Attack)
         { Attack(mainAttack); }
     }
     public void SecondaryAttackControl(InputAction.CallbackContext context)
     {
-        if (state != State.Attack)
+        if (context.performed && state != State.Attack)
         { Attack(secondaryAttack); }
     }
     private void Attack(GameObject attack)
@@ -73,6 +79,17 @@ public class PlayerController : Actor, IReactive, IDamagable
     {
         _direction = context.ReadValue<Vector2>();
     }
+    public void LookControl(InputAction.CallbackContext context)
+    {
+        if (input.currentControlScheme == "Keyboard&Mouse")
+        {
+            _lookDirection = (Camera.main.ScreenToWorldPoint(context.ReadValue<Vector2>()) - transform.position).normalized ;
+        }
+        else
+        {
+            _lookDirection = context.ReadValue<Vector2>();
+        }
+    }    
     private void Move()
     {
         if (_direction != Vector2.zero)

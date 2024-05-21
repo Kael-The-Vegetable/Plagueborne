@@ -13,7 +13,7 @@ public class ArcaneBurst : Attack
 
     private IReactive _reactive;
     private int _enemyLayer;
-    internal void Start()
+    internal void Awake()
     {
         _enemyLayer = 1 << LayerMask.NameToLayer("Enemy");
     }

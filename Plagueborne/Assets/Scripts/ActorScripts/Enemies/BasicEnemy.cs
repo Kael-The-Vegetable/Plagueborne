@@ -7,7 +7,7 @@ public class BasicEnemy : EnemyAI, IReactive
     public float attackTime = 2;
     public float attackRatio = 0.33f;
     [Space]
-    public float lungeForce = 800;
+    public float lungeForce = 1.5f;
     internal override void FixedUpdate()
     {
         if (path == null || _currentWaypoint >= path.vectorPath.Count)
@@ -37,10 +37,8 @@ public class BasicEnemy : EnemyAI, IReactive
                     { StopCoroutine(_attackCoroutine); }
 
                     // start an attack
-                    _attackCoroutine = StartCoroutine(
-                        GameState.DelayedVarChange(
-                            result => CurrentState = result, attackTime, State.Attack, State.Idle));
-                    
+                    _attackCoroutine = StartCoroutine(GameState.DelayedVarChange(
+                        result => CurrentState = result, attackTime, State.Attack, State.Idle));
                     StartCoroutine(Lunge(attackTime, attackRatio));
                 }
                 break;
@@ -60,6 +58,14 @@ public class BasicEnemy : EnemyAI, IReactive
         _body.AddForce(dir * lungeForce  * speed * 0.25f);
         yield return new WaitForSeconds(attackDuration * lungRatio);
         _body.AddForce(-dir * lungeForce * speed);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {// REWORK SO THAT COLLISION IS A ENABLED COLLISION SHAPE.
+        if (collision.collider.CompareTag("Player") && CurrentState == State.Attack && _body.velocity.magnitude > lungeForce)
+        {
+            Debug.Log("HIT");
+        }
     }
 
     #region IReactive Methods

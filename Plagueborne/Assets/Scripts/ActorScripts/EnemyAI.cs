@@ -19,6 +19,8 @@ public abstract class EnemyAI : Actor, IDamagable
     protected Coroutine _hitCoroutine;
     protected Coroutine _attackCoroutine;
 
+    protected int _enemyLayer;
+
     #region Reset Variables
     protected float _originalDrag;
     protected float _originalSpeed;
@@ -29,6 +31,7 @@ public abstract class EnemyAI : Actor, IDamagable
         _target = GameObject.FindGameObjectWithTag("Player").transform;
         _seeker = GetComponent<Seeker>();
         _body = GetComponent<Rigidbody2D>();
+        _enemyLayer = 1 << LayerMask.NameToLayer("Enemy");
 
         _originalDrag = _body.drag;
         _originalSpeed = speed;
@@ -45,8 +48,17 @@ public abstract class EnemyAI : Actor, IDamagable
     internal abstract void FixedUpdate();
     internal virtual void UpdatePath()
     {
-        if (_seeker.IsDone())
-        { _seeker.StartPath(transform.position, _target.position, OnPathComplete); }    
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, _target.position - transform.position, Vector2.Distance(transform.position, _target.position) + 1, ~_enemyLayer);
+        if (hit.transform == _target && path != null)
+        {
+            path.vectorPath.Clear();
+            path.vectorPath.Add(_target.position);
+            _currentWaypoint = 0;
+        }
+        else if (_seeker.IsDone())
+        {
+            _seeker.StartPath(transform.position, _target.position, OnPathComplete); 
+        }    
     }
     internal virtual void OnPathComplete(Path p)
     {
@@ -77,5 +89,14 @@ public abstract class EnemyAI : Actor, IDamagable
         gameObject.SetActive(false);
         CurrentState = State.Die;
         Singleton.Global.State.Kills++;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (path != null && path.vectorPath.Count == 1)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(transform.position, path.vectorPath[0]);
+        }
     }
 }

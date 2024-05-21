@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6839489394728438555}
   - component: {fileID: 5064781390721810034}
   m_Layer: 6
-  m_Name: EnemyGFX
+  m_Name: PeasantGFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: -7096823667730229273}
   - component: {fileID: 8040490144468720473}
   m_Layer: 6
-  m_Name: Enemy
+  m_Name: Peasant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -258,11 +258,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MaxHitPoints>k__BackingField: 10
   <HitThreshold>k__BackingField: 5
-  speed: 500
+  speed: 300
   nextWaypointDistance: 2
   repathRate: 0.25
   attackDistance: 2
   damage: 1
   attackTime: 1
   attackRatio: 0.2
-  lungeForce: 1.25
+  lungeForce: 1.5

@@ -26,7 +26,7 @@ public class SoulExpulsion : Attack
         float times = time / attackSpeed;
         float remainder = times % 1 * attackSpeed;
         yield return new WaitForSeconds(0.5f);
-        transform.parent.GetComponent<PlayerController>().CurrentState = Actor.State.Idle;
+        transform.parent.GetComponent<Actor>().CurrentState = Actor.State.Idle;
         for (int i = 0; i < times; i++)
         {
             for (int j = 0; j < numSpectorsPerAttack; j++) 

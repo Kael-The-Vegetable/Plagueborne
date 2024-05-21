@@ -1,33 +1,63 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public ObjectPool pool;
     public Transform target;
     [Space]
     public int numOfEntities;
+
+    [Tooltip("0 for instantanious spawning")]
+    public float timeBetweenEntities; // 0 for instantanious
+    [Space]
     public int minDistance;
     public int maxDistance;
 
-    void Start()
+    private int _objectNumber;
+    private void Start()
     {
-        for (int i = 0; i < numOfEntities; i++)
-        { NewObject(pool); }
+        if (timeBetweenEntities > 0)
+        { InvokeRepeating("SpawnEnemies", 0, timeBetweenEntities); }
+        else
+        {
+            for (int i = 0; i < numOfEntities; i++)
+            { NewObject(Singleton.Global.Objects.GetPeasantPool()); }
+        }
     }
     void Update()
     {
-        int objNum = pool.NumOfObjects;
-        for (int i = objNum; i < numOfEntities; i++)
-        { NewObject(pool); }
-        Transform[] objects = pool.GetObjectTransforms(numOfEntities);
-        for (int i = 0; i < numOfEntities; i++)
+        ObjectPool peasantPool = Singleton.Global.Objects.GetSlimePool();
+        if (timeBetweenEntities == 0)
         {
-            if (Vector2.Distance(objects[i].position, target.position) > maxDistance)
-            { NewPosition(objects[i]); }
+            for (int i = _objectNumber; i < numOfEntities; i++)
+            { NewObject(peasantPool); }
+        }
+        
+        
+        Transform[] objects = peasantPool.GetObjectTransforms(_objectNumber);
+        Debug.Log($"Number Recorded: {_objectNumber} | Number Actual: {peasantPool.NumOfObjects}");
+        for (int i = 0; i < _objectNumber; i++)
+        {
+            if (objects[i] != null)
+            {
+                if (Vector2.Distance(objects[i].position, target.position) > maxDistance)
+                { NewPosition(objects[i]); }
+            }
         }
     }
+
+    private void SpawnEnemies()
+    {
+        _objectNumber = Singleton.Global.Objects.ActiveObjects;
+        if (_objectNumber < numOfEntities)
+        {
+            NewObject(Singleton.Global.Objects.GetSlimePool());
+        }
+    }
+
+    /// <summary>
+    /// Sets the location of a monster at a random range but inside the maximum distance allowed.
+    /// </summary>
+    /// <param name="transform"></param>
     public void NewPosition(Transform transform)
     {
         Vector2 pos = Random.insideUnitCircle.normalized;

@@ -15,9 +15,10 @@ public class Dropshadow : MonoBehaviour
     void Start()
     {
         _shadow = new GameObject("Shadow");
-
+        _shadow.transform.parent = targetToFollow;
         _shadow.transform.localScale = scale;
         _shadow.transform.localRotation = Quaternion.identity;
+        _shadow.transform.localPosition = offset;
 
         SpriteRenderer renderer = GetComponent<SpriteRenderer>();
         SpriteRenderer shadowRenderer = _shadow.AddComponent<SpriteRenderer>();
@@ -26,9 +27,5 @@ public class Dropshadow : MonoBehaviour
 
         shadowRenderer.sortingLayerName = renderer.sortingLayerName;
         shadowRenderer.sortingOrder = renderer.sortingOrder - 1;
-    }
-    void LateUpdate()
-    {
-        _shadow.transform.localPosition = (Vector2)targetToFollow.position + offset;
     }
 }

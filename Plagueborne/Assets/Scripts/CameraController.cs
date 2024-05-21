@@ -3,20 +3,16 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     private Transform _target;
-    public float deadZoneRadius;
-    public float lerpTuning = 0.5f;
-    public float speed;
+    private Vector3 _offset = new Vector3(0, 0, -10);
+    private Vector3 velocity;
+    public float smoothTime = 0.25f;
     void Start()
     {
         _target = GameObject.FindGameObjectWithTag("Player").transform;
     }
     void Update()
     {
-        if (Vector2.Distance(transform.position, _target.position) > deadZoneRadius)
-        {
-            Vector2 distance = Vector2.Lerp(transform.position, _target.position, lerpTuning) 
-                - (Vector2)transform.position;
-            transform.Translate(distance * speed * Time.deltaTime, Space.World);
-        }
+        Vector3 targetPos = _target.position + _offset;
+        transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref velocity, smoothTime);
     }
 }

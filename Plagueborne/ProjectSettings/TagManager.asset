@@ -6,6 +6,7 @@ TagManager:
   tags:
   - GameState
   - Canvas
+  - EnemyPool
   layers:
   - Default
   - TransparentFX
