@@ -37,7 +37,7 @@ public class SlimeEnemy : EnemyAI
             MaxHitPoints *= inverseSplitNum;
             for (int i = 0; i < splitIntoNumber; i++)
             {
-                _childSlimes[i] = Instantiate(transform, Vector2.zero, Quaternion.identity);
+                _childSlimes[i] = Instantiate(transform, Vector2.zero, Quaternion.identity, transform.parent);
                 Transform slime = _childSlimes[i];
                 slime.localScale = transform.localScale * inverseSplitNum;
                 slime.gameObject.SetActive(false);
