@@ -58,9 +58,9 @@ public class ObjectPool : MonoBehaviour
         if (array.Length == 0)
         {
             array = new Transform[length];
-            for (int c = 0; c < length; c++)
+            for (int c = 0; c < length; c++)    
             {
-                array[c] = Instantiate(prefab);
+                array[c] = Instantiate(prefab, transform);
                 array[c].gameObject.SetActive(false);
             }
         }

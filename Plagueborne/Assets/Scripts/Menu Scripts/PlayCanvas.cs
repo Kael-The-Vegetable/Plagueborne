@@ -31,7 +31,7 @@ public class PlayCanvas : MonoBehaviour
 
         for (int i = 0; i < buttons.Length; i++)
         {
-            buttons[i].GetComponent<Button>().onClick.AddListener(() => GameState.ChangeScene(i));
+            buttons[i].GetComponent<Button>().onClick.AddListener(() => PlayLevel1());
         }
     }
     private void Update()
@@ -72,5 +72,17 @@ public class PlayCanvas : MonoBehaviour
             }
         }
         #endregion
+    }
+    private void PlayLevel1()
+    {
+        string[] waveData =
+        {
+            "60 | 0.05 | 1 | Peasant | 1",
+            "60 | 1 | 1 | Slime | 1",
+            "60 | 0.05 | 2 | Slime | 0.05 | Peasant | 0.95",
+            "120 | 0.01 | 2 | Slime | 0.95 | Peasant | 0.05"
+        };
+        Singleton.Global.Waves.SetWaveDataForNextScene(waveData);
+        GameState.ChangeScene(1);
     }
 }

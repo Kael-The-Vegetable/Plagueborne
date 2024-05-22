@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
@@ -6,51 +7,55 @@ public class EnemySpawner : MonoBehaviour
     [Space]
     public int numOfEntities;
 
-    [Tooltip("0 for instantanious spawning")]
-    public float timeBetweenEntities; // 0 for instantanious
+    public float timeBetweenEntities = 0.1f; // must be greater than 0
+    private float _currentTime;
     [Space]
     public int minDistance;
     public int maxDistance;
 
+    public List<ObjectPool> pools;
+    public List<float> poolPercentages;
+
     private int _objectNumber;
-    private void Start()
-    {
-        if (timeBetweenEntities > 0)
-        { InvokeRepeating("SpawnEnemies", 0, timeBetweenEntities); }
-        else
-        {
-            for (int i = 0; i < numOfEntities; i++)
-            { NewObject(Singleton.Global.Objects.GetPeasantPool()); }
-        }
-    }
     void Update()
     {
-        ObjectPool peasantPool = Singleton.Global.Objects.GetSlimePool();
-        if (timeBetweenEntities == 0)
+        _currentTime += Time.deltaTime;
+        if (_currentTime > timeBetweenEntities)
         {
-            for (int i = _objectNumber; i < numOfEntities; i++)
-            { NewObject(peasantPool); }
-        }
-        
-        
-        Transform[] objects = peasantPool.GetObjectTransforms(_objectNumber);
-        Debug.Log($"Number Recorded: {_objectNumber} | Number Actual: {peasantPool.NumOfObjects}");
-        for (int i = 0; i < _objectNumber; i++)
-        {
-            if (objects[i] != null)
+            _currentTime = 0;
+            float randNum = Random.value;
+            for (int i = 0; i < poolPercentages.Count; i++)
             {
-                if (Vector2.Distance(objects[i].position, target.position) > maxDistance)
-                { NewPosition(objects[i]); }
+                if (poolPercentages[i] > randNum)
+                {// found
+                    SpawnEnemies(pools[i]);
+                }
+                else
+                {// not found, remove percentage away
+                    randNum -= poolPercentages[i];
+                }
             }
         }
+        
+        
+        
+        
+        //for (int i = 0; i < _objectNumber; i++)
+        //{
+        //    if (objects[i] != null)
+        //    {
+        //        if (Vector2.Distance(objects[i].position, target.position) > maxDistance)
+        //        { NewPosition(objects[i]); }
+        //    }
+        //}
     }
 
-    private void SpawnEnemies()
+    private void SpawnEnemies(ObjectPool pool)
     {
         _objectNumber = Singleton.Global.Objects.ActiveObjects;
         if (_objectNumber < numOfEntities)
         {
-            NewObject(Singleton.Global.Objects.GetSlimePool());
+            NewObject(pool);
         }
     }
 
