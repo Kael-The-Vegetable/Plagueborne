@@ -16,7 +16,8 @@ public class EnemySpawner : MonoBehaviour
     public List<ObjectPool> pools;
     public List<float> poolPercentages;
 
-    private int _objectNumber;
+    private int _objectNumber = 0;
+    private Transform[] _objects = new Transform[0];
     void Update()
     {
         _currentTime += Time.deltaTime;
@@ -36,23 +37,17 @@ public class EnemySpawner : MonoBehaviour
                 }
             }
         }
-        
-        
-        
-        
-        //for (int i = 0; i < _objectNumber; i++)
-        //{
-        //    if (objects[i] != null)
-        //    {
-        //        if (Vector2.Distance(objects[i].position, target.position) > maxDistance)
-        //        { NewPosition(objects[i]); }
-        //    }
-        //}
+        for (int i = 0; i < _objects.Length; i++)
+        {
+            if (Vector2.Distance(_objects[i].position, target.position) > maxDistance + 10)
+            { NewPosition(_objects[i]); }
+        }
     }
 
     private void SpawnEnemies(ObjectPool pool)
     {
         _objectNumber = Singleton.Global.Objects.ActiveObjects;
+        _objects = Singleton.Global.Objects.ActiveObjectTransforms;
         if (_objectNumber < numOfEntities)
         {
             NewObject(pool);
@@ -77,6 +72,7 @@ public class EnemySpawner : MonoBehaviour
     {
         bool returned = false;
         Transform newObject = pool.Object;
+        pool.ActiveTransforms.Add(newObject);
         if (newObject != null)
         { 
             NewPosition(newObject); 

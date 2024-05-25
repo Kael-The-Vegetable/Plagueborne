@@ -54,6 +54,10 @@ public class ObjectManager : MonoBehaviour
         types[1] = Resources.Load<Transform>("Prefabs/Enemies/Slime");
         return types;
     }
+
+    /// <summary>
+    /// Gets all the active objects which are in the types allocated by ObjectManager.
+    /// </summary>
     public int ActiveObjects
     {
         get
@@ -66,6 +70,32 @@ public class ObjectManager : MonoBehaviour
             return numObj;
         }
     }
+
+    /// <summary>
+    /// Gets all the Transforms of active objects in the types allocated by ObjectManager.
+    /// </summary>
+    public Transform[] ActiveObjectTransforms
+    {
+        get
+        {
+            List<Transform> transformList = new List<Transform>();
+            for (int i = 0; i < _typeIDs.Length; i++)
+            {
+                transformList.AddRange(_pools[_typeIDs[i]].ActiveTransforms);
+            }
+            return transformList.ToArray();
+        }
+    }
+
+    /// <summary>
+    /// Gets the pool for Peasants
+    /// </summary>
+    /// <returns></returns>
     public ObjectPool GetPeasantPool() => _pools[_typeIDs[0]];
+    
+    /// <summary>
+    /// Gets the pool for Slimes
+    /// </summary>
+    /// <returns></returns>
     public ObjectPool GetSlimePool() => _pools[_typeIDs[1]];
 }

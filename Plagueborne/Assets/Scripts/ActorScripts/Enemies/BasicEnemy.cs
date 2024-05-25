@@ -64,7 +64,7 @@ public class BasicEnemy : EnemyAI, IReactive
     {// REWORK SO THAT COLLISION IS A ENABLED COLLISION SHAPE.
         if (collision.collider.CompareTag("Player") && CurrentState == State.Attack && _body.velocity.magnitude > lungeForce)
         {
-            Debug.Log("HIT");
+            
         }
     }
 

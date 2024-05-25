@@ -6,7 +6,7 @@ public class ObjectPool : MonoBehaviour
 {
     public Transform prefab;
     public int numberOfPrefabs;
-    private Transform[] objects = new Transform[0];
+    public Transform[] objects = new Transform[0];
     void Awake()
     {
         objects = InitializeArray(objects, numberOfPrefabs, prefab);
@@ -31,28 +31,9 @@ public class ObjectPool : MonoBehaviour
     }
     public int NumOfObjects
     {
-        get
-        {
-            int c = 0;
-            for (int i = 0; i < objects.Length; i++)
-            {
-                if (objects[i].gameObject.activeInHierarchy)
-                { c++; }
-            }
-            return c;
-        }
+        get => ActiveTransforms.Count;
     }
-    public Transform[] GetObjectTransforms(int length)
-    {
-        Transform[] transforms = new Transform[length];
-        int c = 0;
-        for (int i = 0; i < objects.Length; i++)
-        {
-            if (objects[i].gameObject.activeInHierarchy && c < length)
-            { transforms[c++] = objects[i]; } // ++ after the variable will return then add one.
-        }
-        return transforms;
-    }
+    public List<Transform> ActiveTransforms { get; set; } = new List<Transform>();
     public Transform[] InitializeArray(Transform[] array, int length, Transform prefab)
     {
         if (array.Length == 0)

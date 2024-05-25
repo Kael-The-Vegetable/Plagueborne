@@ -1,9 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
-
-// BROKEN! FIX LATER!!!
 public class SlimeEnemy : EnemyAI
 {
     [Space]
@@ -21,7 +17,6 @@ public class SlimeEnemy : EnemyAI
     internal override void Awake()
     {
         base.Awake();
-
         _targetCollider = _target.GetComponent<Collider2D>();
         _collider = GetComponent<Collider2D>();
         Physics2D.IgnoreCollision(_targetCollider, _collider);
@@ -35,6 +30,8 @@ public class SlimeEnemy : EnemyAI
             speed *= inverseSplitNum;
             damage *= inverseSplitNum;
             MaxHitPoints *= inverseSplitNum;
+            List<Transform> objects = new List<Transform>();
+            objects.AddRange(_originatingPool.objects);
             for (int i = 0; i < splitIntoNumber; i++)
             {
                 _childSlimes[i] = Instantiate(transform, Vector2.zero, Quaternion.identity, transform.parent);
@@ -44,6 +41,8 @@ public class SlimeEnemy : EnemyAI
                 Rigidbody2D slimeBody = slime.GetComponent<Rigidbody2D>();
                 slimeBody.mass = GetComponent<Rigidbody2D>().mass * inverseSplitNum;
             }
+            objects.AddRange(_childSlimes);
+            _originatingPool.objects = objects.ToArray();
             splitAmount++;
             speed *= splitIntoNumber;
             damage *= splitIntoNumber;

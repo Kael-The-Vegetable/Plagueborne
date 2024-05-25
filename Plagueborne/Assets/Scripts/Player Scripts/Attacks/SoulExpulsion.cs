@@ -12,8 +12,14 @@ public class SoulExpulsion : Attack
     public float spectorSpeed = 1;
     public float spectorSearchRadius = 2;
     public float spectorRotateRate = 60;
-
-    public ObjectPool pool;
+    [Space]
+    private ObjectPool _pool;
+    public Transform poolObject;
+    internal void Awake()
+    {
+        Transform pool = Instantiate(poolObject);
+        _pool = pool.GetComponent<ObjectPool>();
+    }
     internal override void OnDisable()
     {
     }
@@ -34,7 +40,7 @@ public class SoulExpulsion : Attack
     }
     private void SpawnSpector()
     {
-        Transform obj = pool.Object;
+        Transform obj = _pool.Object;
         if (obj != null )
         {
             obj.Rotate(new Vector3(0, 0, Random.Range(0, 359)));

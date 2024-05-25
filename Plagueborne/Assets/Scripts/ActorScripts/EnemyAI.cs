@@ -20,6 +20,7 @@ public abstract class EnemyAI : Actor, IDamagable
     protected Coroutine _attackCoroutine;
 
     protected int _enemyLayer;
+    protected ObjectPool _originatingPool;
 
     #region Reset Variables
     protected float _originalDrag;
@@ -32,6 +33,8 @@ public abstract class EnemyAI : Actor, IDamagable
         _seeker = GetComponent<Seeker>();
         _body = GetComponent<Rigidbody2D>();
         _enemyLayer = 1 << LayerMask.NameToLayer("Enemy");
+
+        _originatingPool = transform.parent.GetComponent<ObjectPool>();
 
         _originalDrag = _body.drag;
         _originalSpeed = speed;
@@ -87,6 +90,7 @@ public abstract class EnemyAI : Actor, IDamagable
     {
         StopAllCoroutines();
         gameObject.SetActive(false);
+        _originatingPool.ActiveTransforms.Remove(transform);
         CurrentState = State.Die;
         Singleton.Global.State.Kills++;
     }

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3985728291129878600
+--- !u!1 &2772717194760080871
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,50 +8,42 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8510352929184818186}
-  - component: {fileID: 1086629609154024797}
+  - component: {fileID: 5674686527604406085}
+  - component: {fileID: 3664639883211222215}
   m_Layer: 0
-  m_Name: Soul Expulsion
+  m_Name: Spectors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &8510352929184818186
+  m_IsActive: 1
+--- !u!4 &5674686527604406085
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3985728291129878600}
+  m_GameObject: {fileID: 2772717194760080871}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.73, y: 1.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1086629609154024797
+--- !u!114 &3664639883211222215
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3985728291129878600}
+  m_GameObject: {fileID: 2772717194760080871}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95b464717cb32e0429a23cae305a2c5c, type: 3}
+  m_Script: {fileID: 11500000, guid: d3bdd89b6df702c41acc5421a0f3208c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 5
-  time: 2
-  attackSpeed: 0.25
-  numSpectorsPerAttack: 2
-  spectorTimeAlive: 10
-  spectorNumberOfHits: 4
-  spectorSpeed: 4
-  spectorSearchRadius: 4
-  spectorRotateRate: 120
-  pool: {fileID: 0}
-  poolObject: {fileID: 5674686527604406085, guid: 17df1391f6f36434fa30833fc664adfd, type: 3}
+  prefab: {fileID: 1440550383717423727, guid: 61dcf0d841fb29847aa2bb5654f0cbb6, type: 3}
+  numberOfPrefabs: 100
+  objects: []

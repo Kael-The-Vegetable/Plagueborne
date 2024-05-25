@@ -7,10 +7,15 @@ using UnityEngine.SceneManagement;
 public class GameState : MonoBehaviour
 {
     private GameObject _canvas = null;
+    private GameObject _player = null;
+
     private bool _firstScene;
     private bool _isPaused = false;
 
     public int Kills { get; set; }
+
+    public GameObject[] playerLoadout = new GameObject[2];
+
     private void Awake()
     {
         _firstScene = SceneManager.GetActiveScene().buildIndex == 0;
@@ -69,13 +74,30 @@ public class GameState : MonoBehaviour
         else
         { _firstScene = false; }
         GameObject[] newObjects = next.GetRootGameObjects();
-        for (int i = 0; i < newObjects.Length && _canvas == null; i++)
+        _canvas = null;
+        _player = null;
+        for (int i = 0; i < newObjects.Length && (_canvas == null || _player == null); i++)
         {
             if (newObjects[i].CompareTag("Canvas"))
             { _canvas = newObjects[i]; }
+            else if (newObjects[i].CompareTag("Player"))
+            { 
+                _player = newObjects[i];
+                LoadoutSetup(_player.transform); 
+            }
         }
         if (!_firstScene && _canvas != null)
         { _canvas.SetActive(false); }
     }
-    
+    private void LoadoutSetup(Transform player)
+    {
+        if (player == null || playerLoadout == null || playerLoadout.Length < 2)
+        { return; }
+
+        PlayerController playerScript = player.GetComponent<PlayerController>();
+        GameObject mainAttack = Instantiate(playerLoadout[0], player);
+        playerScript.mainAttack = mainAttack;
+        GameObject secondaryAttack = Instantiate(playerLoadout[1], player);
+        playerScript.secondaryAttack = secondaryAttack;
+    }
 }

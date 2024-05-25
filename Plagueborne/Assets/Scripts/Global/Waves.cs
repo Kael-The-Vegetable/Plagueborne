@@ -55,7 +55,6 @@ public class Waves : MonoBehaviour
     {
         if (_currentWave < _waveLength.Length)
         {
-            Debug.Log(_currentWaveTime);
             _currentWaveTime += Time.deltaTime;
             if (_waveLength[_currentWave] < _currentWaveTime)
             {
