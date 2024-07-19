@@ -93,11 +93,12 @@ public class GameState : MonoBehaviour
     {
         if (player == null || playerLoadout == null || playerLoadout.Length < 2)
         { return; }
-
         PlayerController playerScript = player.GetComponent<PlayerController>();
         GameObject mainAttack = Instantiate(playerLoadout[0], player);
+        Debug.Log(mainAttack.name);
         playerScript.mainAttack = mainAttack;
         GameObject secondaryAttack = Instantiate(playerLoadout[1], player);
+        Debug.Log(secondaryAttack.name);
         playerScript.secondaryAttack = secondaryAttack;
     }
 }

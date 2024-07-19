@@ -90,12 +90,10 @@ public class ObjectManager : MonoBehaviour
     /// <summary>
     /// Gets the pool for Peasants
     /// </summary>
-    /// <returns></returns>
     public ObjectPool GetPeasantPool() => _pools[_typeIDs[0]];
     
     /// <summary>
     /// Gets the pool for Slimes
     /// </summary>
-    /// <returns></returns>
     public ObjectPool GetSlimePool() => _pools[_typeIDs[1]];
 }
